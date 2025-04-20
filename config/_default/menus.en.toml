@@ -1,0 +1,23 @@
+[[main]]
+none = "none"
+
+[[main]]
+name = "Events"
+pageRef = "Events"
+identifier = "MU5KHCnt3x"
+weight = 9997
+
+[[main]]
+name = "Memberships"
+pageRef = "Memberships"
+identifier = "MU5KHCnt3z"
+weight = 9998
+
+[[main]]
+name = "About Us"
+pageRef = "About"
+identifier = "MU5KHCnt3y"
+weight = 9999
+
+[[footer]]
+none = "none"

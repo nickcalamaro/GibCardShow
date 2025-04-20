@@ -1,0 +1,21 @@
+disabled = false
+languageCode = "en"
+languageName = "English"
+weight = 1
+title = "Gibraltar Dice Bastion"
+
+[params]
+displayName = "EN"
+isoCode = "en"
+rtl = false
+dateFormat = "2 January 2006"
+
+[params.author]
+name = "Gibraltar Dice Bastion"
+image = "img/GWC_Logo.png"
+headline = "Tabletop games on the rock"
+links = [
+    { facebook = ""},
+    {instagram = "https://www.instagram.com/gibraltarwarhammerclub/" },
+    {whatsapp = ""}
+]
