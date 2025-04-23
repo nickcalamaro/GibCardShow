@@ -31,7 +31,7 @@ cardViewScreenWidth = false
 layoutBackgroundBlur = false
 
 [article]
-showDate = false
+showDate = true
 showViews = false
 showLikes = false
 showDateOnlyInArticle = false
@@ -56,20 +56,21 @@ showWordCount = false
 showZenMode = false
 
 [list]
-showHero = false
+showHero = true
 layoutBackgroundBlur = true
 layoutBackgroundHeaderSpace = true
 showBreadcrumbs = false
-showSummary = false
+showSummary = true
 showViews = false
 showLikes = false
 showTableOfContents = false
-showCards = false
+showCards = true
 orderByWeight = false
-groupByYear = true
+groupByYear = false
 cardView = false
 cardViewScreenWidth = false
 constrainItemsWidth = false
+heroStyle = "thumbAndBackground"
 
 [sitemap]
 excludedKinds = [ "taxonomy", "term" ]
