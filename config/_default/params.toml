@@ -21,8 +21,8 @@ showAppearanceSwitcher = true
 showScrollToTop = true
 
 [homepage]
-layout = "background"
-homepageImage = "/img/ClubBackground.jpg"
+layout = "card"
+homepageImage = "/img/GCSBackground.jpg"
 showRecent = false
 showRecentItems = 5
 showMoreLink = false
