@@ -1,6 +1,6 @@
 ---
 Title: TCG Pocket Tournament
-Date: 2025-10-02
+Date: 2025-11-02
 Summary: 'Fast‑paced Pokémon TCG Pocket battles at the Gibraltar Card Show!'
 ---
 

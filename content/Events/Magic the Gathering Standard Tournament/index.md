@@ -1,6 +1,6 @@
 ---
 Title: MTG - Standard Tournament
-Date: 2025-10-01
+Date: 2025-11-01
 Summary: 'Gibraltar&apos;s biggest MTG Tournament to Date!'
 ---
 

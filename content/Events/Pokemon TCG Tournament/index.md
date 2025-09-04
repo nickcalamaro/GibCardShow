@@ -1,6 +1,6 @@
 ---
 Title: Pokémon TCG - Standard Tournament
-Date: 2025-10-02
+Date: 2025-11-02
 Summary: 'Bring down your favourite Pokémon and compete for awesome prizes!'
 ---
 
