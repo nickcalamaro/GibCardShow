@@ -8,8 +8,8 @@ identifier = "MU5KHCnt3x"
 weight = 9997
 
 [[main]]
-name = "Memberships"
-pageRef = "Memberships"
+name = "Tickets"
+pageRef = "Tickets"
 identifier = "MU5KHCnt3z"
 weight = 9998
 
