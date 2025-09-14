@@ -133,7 +133,7 @@ Summary: 'Bring down your favourite Pokémon and compete for awesome prizes!'
       Players will compete in 4 Swiss rounds to determine standings.
       The top 8 players will then advance to single‑elimination knockout rounds until a champion is crowned.
       <p>
-      All rounds will be played as best of three matches.
+      All rounds will be played as best of three matches and last 50 minutes.
     </p>
   </div>
 
