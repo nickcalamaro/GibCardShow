@@ -140,8 +140,10 @@ Summary: 'Gibraltar&apos;s biggest MTG Tournament to Date!'
       <div class="value">4 + Top 8</div>
     </div>
     <p>
-      Each player will play 4 rounds of best‑of‑three matches to determine rankings. After these 4 rounds,
+      Each player will play 4 rounds to determine rankings. After these 4 rounds,
       the top 8 players will proceed to single‑elimination knockout rounds until a winner is crowned.
+      <p>
+      All rounds will be played as best of three matches.
     </p>
   </div>
 
