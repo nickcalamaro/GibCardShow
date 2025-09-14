@@ -9,13 +9,18 @@ displayName = "EN"
 isoCode = "en"
 rtl = false
 dateFormat = "2 January 2006"
+logo = "Insta Posts (10).png"
 
-[params.author]
-name = "Gibraltar Dice Bastion"
-image = "img/GWC_Logo.png"
-headline = "Tabletop games on the rock"
-links = [
-    { facebook = "https://www.facebook.com/gibraltarwarhammerclub"},
-    {instagram = "https://www.instagram.com/gibraltarwarhammerclub/" },
-    {whatsapp = "https://chat.whatsapp.com/DQftL9NRfEKLSUQvJDVEYR"}
-]
+  [params.author]
+  name = "Gibraltar Card Show"
+  image = "img/GWC_Logo.png"
+  headline = "Tabletop games on the rock"
+
+    [[params.author.links]]
+    facebook = "https://www.facebook.com/gibraltarwarhammerclub"
+
+    [[params.author.links]]
+    instagram = "https://www.instagram.com/gibraltarwarhammerclub/"
+
+    [[params.author.links]]
+    whatsapp = "https://chat.whatsapp.com/DQftL9NRfEKLSUQvJDVEYR"
