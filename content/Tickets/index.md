@@ -108,6 +108,47 @@ html.dark .ticket-option:hover .label, html.dark .ticket-option:hover .price { c
   .ticket-table td, .ticket-table .header { color: #fff !important; }
   .ticket-table .divider td { border-bottom-color: rgba(255, 255, 255, 0.18) !important; }
 }
+
+/* Mobile-friendly table wrapping */
+@media (max-width: 480px) {
+  /* Let the table compute widths more predictably and fill the viewport */
+  .ticket-table {
+    display: table;          /* override inline-table on small screens */
+    width: 100%;
+    table-layout: fixed;     /* consistent column widths */
+  }
+
+  /* Slightly tighter spacing and type size */
+  .ticket-table td {
+    padding: 12px 14px;
+    font-size: 0.98em;
+  }
+
+  /* Header can wrap on two lines if needed */
+  .ticket-table .header {
+    font-size: 1.25em;
+    padding: 14px;
+    white-space: normal;     /* allow wrap */
+  }
+
+  /* Allow labels to wrap so long names don't push off-screen */
+  .ticket-table .label {
+    white-space: normal;     /* allow wrap */
+    word-break: break-word;  /* break long words if necessary */
+    hyphens: auto;           /* nicer hyphenation when supported */
+  }
+
+  /* Keep the price on one line and ensure chevron has room */
+  .ticket-table .price {
+    white-space: nowrap;     /* keep £X on one line */
+    padding-right: 28px;     /* space for the chevron */
+  }
+
+  /* If you want stronger column guidance on tiny screens */
+  .ticket-table tr > td:first-child { width: 68%; }
+  .ticket-table tr > td:last-child { width: 32%; }
+}
+
 </style>
 </head>
 
