@@ -134,9 +134,8 @@ Summary: 'Bring down your favourite Pokémon and compete for awesome prizes!'
   <div class="rules-section swiss" style="background:#d0e6ff; padding:10px; border-radius:8px; margin-bottom:12px;">
     <strong>🟦 Swiss Rounds (can end in a draw)</strong>
     <ul style="margin:8px 0 0 20px; padding:0;">
-      <li>When time is called, players must finish the current turn and then play one more full turn.</li>
-      <li>A 10‑minute overtime clock starts immediately when time is called and both turns must be finished in this time.</li>
-      <li>If no winner after that → game is a draw.</li>
+      <li>When time is called, players have ten minutes to finish the current turn and then play one more full turn.</li>
+      <li>If there is no winner after those turns, the game is a draw.</li>
     </ul>
   </div>
 
@@ -146,11 +145,11 @@ Summary: 'Bring down your favourite Pokémon and compete for awesome prizes!'
     <strong>🟥 Top Cut / Elimination (must have a winner)</strong>
     <ul style="margin:8px 0 0 20px; padding:0;">
       <li>Same procedure as above.</li>
-      <li>If 10 minutes expire and no winner:</li>
-      <li>The player with a Prize card lead is declared the winner.</li>
-      <li>If Prizes are tied → start a Tiebreaker Game (normal 6‑Prize setup).</li>
-      <li>Tiebreaker Game has a 10‑minute time limit.</li>
-      <li>The first player to establish a Prize card lead, or to win the game outright by any other method, is declared the winner.</li>
+      <li>If 10 minutes expire and there is no winner:</li>
+      <ul>
+        <li>The player with a Prize card lead is declared the winner.</li>
+        <li>If Prizes are tied a tie-breaker game (normal 6‑Prize setup) will be played to determine the winner. The first player to establish a Prize card lead, or to win the game outright by any other method, is the winner.</li>    
+      <ul>
     </ul>
   </div>
 </div>
