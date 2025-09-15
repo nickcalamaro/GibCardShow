@@ -21,6 +21,7 @@ export default {
         name = '',
         email = '',
         service = '',
+        quantity = 1,
         privacyConsent = false,
         marketingConsent = false
       } = await request.json();
@@ -32,7 +33,7 @@ export default {
         });
       }
 
-      // Look up official price from D1
+      // Look up official unit price from D1
       const product = await env.sumupDB
         .prepare("SELECT amount, currency FROM products WHERE service = ?")
         .bind(service)
@@ -45,7 +46,9 @@ export default {
         });
       }
 
-      const amt = Number(product.amount);
+      const unitAmt = Number(product.amount);
+      const qty = Math.max(1, parseInt(quantity, 10) || 1);
+      const totalAmt = unitAmt * qty;
       const currency = product.currency || 'GBP';
 
       const checkout_reference = `${Date.now()}-${service.replace(/\s+/g, '-').toLowerCase()}`;
@@ -54,10 +57,10 @@ export default {
       // Create checkout in SumUp
       const body = {
         checkout_reference,
-        amount: amt,
+        amount: totalAmt,
         currency,
         merchant_code: 'MUZHYEAH',
-        description: `${service} for ${name} (${email})`,
+        description: `${qty}x ${service} for ${name} (${email})`,
         hosted_checkout: { enabled: true },
         redirect_url: redirectUrl
       };
@@ -84,11 +87,11 @@ export default {
         await env.sumupDB
           .prepare(
             `INSERT INTO payments
-             (name, email, service, amount, currency, status, transaction_id, checkout_reference, checkout_id)
-             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`
+             (name, email, service, quantity, amount, currency, status, transaction_id, checkout_reference, checkout_id)
+             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
           )
           .bind(
-            name, email, service, amt, currency,
+            name, email, service, qty, totalAmt, currency,
             'PENDING', '', checkout_reference, data.id || ''
           )
           .run();
@@ -110,7 +113,6 @@ export default {
           )
           .bind(name, email, privacyConsent ? 1 : 0, marketingConsent ? 1 : 0)
           .run();
-
       } catch (e) {
         console.log('Consent insert failed:', e.message);
       }
