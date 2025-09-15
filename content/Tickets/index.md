@@ -145,8 +145,8 @@ html.dark .ticket-option:hover .label, html.dark .ticket-option:hover .price { c
   }
 
   /* If you want stronger column guidance on tiny screens */
-  .ticket-table tr > td:first-child { width: 80%; }
-  .ticket-table tr > td:last-child { width: 20%; }
+  .ticket-table tr > td:first-child { width: 85%; }
+  .ticket-table tr > td:last-child { width: 15%; }
 }
 
 </style>
