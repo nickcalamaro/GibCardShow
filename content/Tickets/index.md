@@ -137,8 +137,11 @@ html.dark .ticket-option:hover .label, html.dark .ticket-option:hover .price { c
 </div>
 
 <!-- Ticket Table -->
-<div class="ticket-table-wrapper">
-  <table class="ticket-table">
+
+<!-- Ticket Table -->
+<div class="overflow-x-auto px-4 pb-5">
+  <div class="inline-block min-w-full align-middle">
+    <table class="ticket-table min-w-full">
     <tr style="background: linear-gradient(90deg, #000000 0%, #fd4736 100%);">
       <td class="header" colspan="2">🎟️ Ticket Options</td>
     </tr>
@@ -166,7 +169,8 @@ html.dark .ticket-option:hover .label, html.dark .ticket-option:hover .price { c
       <td class="label">Sunday Pass</td>
       <td class="price">£3</td>
     </tr>
-  </table>
+    </table>
+  </div>
 </div>
 
 <script>
