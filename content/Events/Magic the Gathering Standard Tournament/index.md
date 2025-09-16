@@ -4,6 +4,11 @@ Date: 2025-11-01
 Summary: 'Gibraltar&apos;s biggest MTG Tournament to Date!'
 ---
 
+
+<meta property="og:description" content="Gibraltar's biggest MTG Tournament to date!" />
+<meta property="og:image" content="featured-image.png" />
+
+
 <style>
   /* Wrapper to center the card and allow it to expand */
   .event-wrapper {

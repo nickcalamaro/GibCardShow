@@ -1,11 +1,11 @@
 ---
 Title: Pokémon TCG - Standard Tournament
 Date: 2025-11-02
-Summary: 'Bring down your favourite Pokémon and compete for awesome prizes!'
+Summary: 'Gibraltar&apos;s biggest Pokémon TCG Tournament ever'
 ---
 
 <meta property="og:description" content="Gibraltar's biggest Pokémon TCG Tournament ever!" />
-<meta property="og:image" content="/top-prize.png" />
+<meta property="og:image" content="featured-image.png" />
 
 <style>
   .event-card {
