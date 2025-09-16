@@ -2,17 +2,20 @@
 herostyle: "basic"
 showDate: false
 showhero: false
-title: "Gibraltar Card Show 2025 Tickets"
 description: "Get your tickets for the Gibraltar Card Show 2025 — the Rock’s premier trading card and TCG event."
 image: "/img/gcs-logo.png"
+showTitle: false
+layoutBackgroundHeaderSpace: false
+
 ---
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta property="og:title" content="Gibraltar Card Show 2025 Tickets">
 <meta name="description" content="Join us at the Gibraltar Card Show 2025 — the Rock’s biggest TCG and trading card event. Buy tickets now for tournaments, trade nights, and a safe, family‑friendly community.">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Tickets · Gibraltar Card Show</title>
 
 <style>
 /* Intro headline */
