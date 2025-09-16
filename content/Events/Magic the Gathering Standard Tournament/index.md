@@ -161,7 +161,7 @@ Summary: 'Gibraltar&apos;s biggest MTG Tournament to Date!'
   <div class="section">
     <div class="row">
       <div class="label">Tickets</div>
-      <div class="value"><a href="/Tickets">Available Now</a></div>
+      <div class="value"><a href="/tickets">Available Now</a></div>
     </div>
     <p>
       Tickets are now available and include entry into the Gibraltar Card Show.

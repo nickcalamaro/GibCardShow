@@ -4,6 +4,9 @@ Date: 2025-11-02
 Summary: 'Bring down your favourite Pokémon and compete for awesome prizes!'
 ---
 
+<meta property="og:description" content="Gibraltar's biggest Pokémon TCG Tournament ever!" />
+<meta property="og:image" content="/top-prize.png" />
+
 <style>
   .event-card {
     max-width: 800px;
@@ -47,6 +50,15 @@ Summary: 'Bring down your favourite Pokémon and compete for awesome prizes!'
   html.dark .rules-section.topcut, :root.dark .rules-section.topcut, [data-theme='dark'] .rules-section.topcut {
     background: rgba(160, 48, 48, 0.6) !important;
   }
+  /* Make the image block-level and remove any margins */
+.section .row .value img {
+  display: block;            /* no baseline gap */
+  margin: 0;                 /* no extra margins */
+  max-height: 48px;          /* adjust as needed */
+  width: auto;
+  height: auto;
+  vertical-align: top;       /* extra safety */
+}
 </style>
 
 <section class="event-card">
@@ -76,13 +88,13 @@ Summary: 'Bring down your favourite Pokémon and compete for awesome prizes!'
   </div>
 
   <div class="section">
-    <div class="row"><div class="label">Prizes</div><div class="value">To be confirmed</div></div>
+    <div class="row"><div class="label">Prizes</div><div class="value"><img src="top-prize.png" style="max-height:180px; width:auto;"/></div></div>
     <p>Prizes are being provided courtesy of <a href="https://toycorner.gi/">Toy Corner</a>, our event sponsor.
-      More details will be announced soon!</p>
+      First place will take home a <strong>Prismatic Evolutions Super Premium Bundle</strong> More prizes to be announced soon!</p>
   </div>
 
   <div class="section">
-    <div class="row"><div class="label">Tickets</div><div class="value"><a href="/Tickets">Available Now</a></div></div>
+    <div class="row"><div class="label">Tickets</div><div class="value"><a href="/tickets">Available Now</a></div></div>
     <p>Tickets include entry into the Gibraltar Card Show and participation in the tournament.</p>
   </div>
 

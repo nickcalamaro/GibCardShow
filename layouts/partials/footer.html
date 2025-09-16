@@ -1,5 +1,86 @@
 <footer id="site-footer" class="py-10 print:hidden">
   {{/* Footer menu */}}
+
+  <style>
+
+  .sponsor-carousel {
+  position: relative;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  max-width: 100%;
+  padding: 1rem 0;
+  background: rgba(255,255,255,0.05);
+}
+
+.carousel-track {
+  display: flex;
+  gap: 1rem;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  scrollbar-width: none; /* Firefox */
+}
+.carousel-track::-webkit-scrollbar { display: none; }
+
+.carousel-track img {
+  flex: 0 0 auto;
+  width: 100px;
+  height: 100px;
+  object-fit: contain;
+  border-radius: 8px;
+  background: #fff;
+  padding: 0.5rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  transition: transform 0.2s ease;
+}
+.carousel-track img:hover {
+  transform: scale(1.05);
+}
+
+.carousel-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0,0,0,0.5);
+  color: #fff;
+  border: none;
+  font-size: 2rem;
+  padding: 0.25rem 0.5rem;
+  cursor: pointer;
+  z-index: 2;
+}
+.carousel-btn.prev { left: 0; }
+.carousel-btn.next { right: 0; }
+
+@media (max-width: 640px) {
+  .carousel-btn { display: none; } /* hide arrows on mobile */
+  .carousel-track img { width: 120px; height: 120px; }
+}
+</style>
+
+
+
+
+<h1>Our Sponsors</h1>
+
+<div class="sponsor-carousel">
+  <button class="carousel-btn prev" aria-label="Previous">‹</button>
+  <div class="carousel-track">
+    <img src="/img/sponsors/dicebastion-sponsor.png" alt="Dice Bastion">
+    <img src="/img/sponsors/southernlight-sponsor.png" alt="Southern Light TCG">
+    <img src="/img/sponsors/pbcs-sponsor.png" alt="PB Card Shack">
+    <img src="/img/sponsors/wise-sponsor.png" alt="Wise Collector TCG">
+    <img src="/img/sponsors/gcs-sponsor.png" alt="Gibraltar Card Show">
+    <img src="/img/sponsors/toycorner-sponsor.png" alt="Toy Corner">
+    <img src="/img/sponsors/vijay-sponsor.png" alt="Vijay">
+    <img src="/img/sponsors/cardmarket-sponsor.png" alt="Cardmarket">
+  </div>
+  <button class="carousel-btn next" aria-label="Next">›</button>
+</div>
+
+
+
+
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js" defer></script>
 
   {{ if .Site.Params.footer.showMenu | default true }}
@@ -68,4 +149,86 @@
   {{ partialCached "extend-footer.html" . }}
   
   {{ end }}
+
+  <script>
+document.addEventListener('DOMContentLoaded', () => {
+  const track = document.querySelector('.carousel-track');
+  const prevBtn = document.querySelector('.carousel-btn.prev');
+  const nextBtn = document.querySelector('.carousel-btn.next');
+  const scrollAmount = 120; // pixels per arrow click
+
+  // Arrow buttons
+  prevBtn.addEventListener('click', () => {
+    track.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+  });
+  nextBtn.addEventListener('click', () => {
+    track.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+  });
+
+  // Drag-to-scroll
+  let isDown = false;
+  let startX;
+  let scrollLeft;
+
+  track.addEventListener('mousedown', (e) => {
+    isDown = true;
+    track.classList.add('dragging');
+    startX = e.pageX - track.offsetLeft;
+    scrollLeft = track.scrollLeft;
+  });
+  track.addEventListener('mouseleave', () => {
+    isDown = false;
+    track.classList.remove('dragging');
+  });
+  track.addEventListener('mouseup', () => {
+    isDown = false;
+    track.classList.remove('dragging');
+  });
+  track.addEventListener('mousemove', (e) => {
+    if (!isDown) return;
+    e.preventDefault();
+    const x = e.pageX - track.offsetLeft;
+    const walk = (x - startX); // how far moved
+    track.scrollLeft = scrollLeft - walk;
+  });
+
+  // Touch support (mobile)
+  let touchStartX = 0;
+  let touchScrollLeft = 0;
+
+  track.addEventListener('touchstart', (e) => {
+    touchStartX = e.touches[0].pageX;
+    touchScrollLeft = track.scrollLeft;
+  });
+  track.addEventListener('touchmove', (e) => {
+    const x = e.touches[0].pageX;
+    const walk = (x - touchStartX);
+    track.scrollLeft = touchScrollLeft - walk;
+  });
+});
+
+
+
+document.addEventListener('DOMContentLoaded', () => {
+  const track = document.querySelector('.carousel-track');
+  const logos = Array.from(track.children);
+
+  // Clone all logos and append them, so the track has two sets
+  logos.forEach(logo => {
+    const clone = logo.cloneNode(true);
+    track.appendChild(clone);
+  });
+
+  // When user scrolls near the end of the first set, reset back
+  track.addEventListener('scroll', () => {
+    const scrollWidth = track.scrollWidth / 2; // half = original set
+    if (track.scrollLeft >= scrollWidth) {
+      track.scrollLeft -= scrollWidth;
+    }
+  });
+});
+</script>
+
+
+  
 </footer>
