@@ -4,7 +4,7 @@ Date: 2025-11-02
 Summary: 'Gibraltar&apos;s biggest Pokémon TCG Tournament ever'
 ---
 
-<meta property="og:description" content="Gibraltar's biggest Pokémon TCG Tournament ever!" />
+<meta name="description" content="Enter the Pokémon TCG Standard Tournament at the Gibraltar Card Show 2025. Battle through Swiss rounds and Top 8 for a chance to win exclusive prizes.">
 <meta property="og:image" content="featured-image.png" />
 
 <style>

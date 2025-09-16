@@ -5,7 +5,7 @@ Summary: 'Gibraltar&apos;s biggest MTG Tournament to Date!'
 ---
 
 
-<meta property="og:description" content="Gibraltar's biggest MTG Tournament to date!" />
+<meta name="description" content="Compete in the Magic: The Gathering Standard Tournament at the Gibraltar Card Show 2025. Test your deck, face top players, and claim great prizes.">
 <meta property="og:image" content="featured-image.png" />
 
 
