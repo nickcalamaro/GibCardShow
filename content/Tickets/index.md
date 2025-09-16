@@ -150,7 +150,6 @@ html.dark .ticket-option:hover .price { color:#fd7366; }
     </div>
   </div>
 </div>
-
 <!-- Ticket Table -->
 <div class="ticket-table-wrapper">
   <table class="ticket-table">
@@ -161,25 +160,30 @@ html.dark .ticket-option:hover .price { color:#fd7366; }
     <tr style="background:linear-gradient(90deg,#000 0%,#fd4736 100%);">
       <td class="header" colspan="2">🎟️ Ticket Options</td>
     </tr>
-    <tr class="divider ticket-option" data-service="Weekend Pass" data-amount="5">
-      <td class="label">Weekend Pass</td><td class="price">£5</td>
-    </tr>
-    <tr class="divider ticket-option" data-service="Weekend Pass + MTG Tournament" data-amount="10">
-      <td class="label">Weekend Pass + MTG Tournament</td><td class="price">£10</td>
-    </tr>
-    <tr class="divider ticket-option" data-service="Weekend Pass + Pokémon TCG Tournament" data-amount="10">
-      <td class="label">Weekend Pass + Pokémon TCG Tournament</td><td class="price">£10</td>
-    </tr>
-    <tr class="divider ticket-option" data-service="Weekend Pass + Both Tournaments" data-amount="12">
-      <td class="label">Weekend Pass + Both Tournaments</td><td class="price">£12</td>
-    </tr>
+    <!-- Day Passes -->
     <tr class="divider ticket-option" data-service="Saturday Pass" data-amount="3">
       <td class="label">Saturday Pass</td><td class="price">£3</td>
     </tr>
     <tr class="ticket-option" data-service="Sunday Pass" data-amount="3">
       <td class="label">Sunday Pass</td><td class="price">£3</td>
     </tr>
-  </table>
+
+  <!-- Weekend Pass -->
+  <tr class="divider ticket-option" data-service="Weekend Pass" data-amount="5">
+    <td class="label">Weekend Pass</td><td class="price">£5</td>
+  </tr>
+
+  <!-- Tournament Packages -->
+  <tr class="divider ticket-option" data-service="Weekend Pass + MTG Tournament" data-amount="10">
+    <td class="label">Weekend Pass + MTG Tournament</td><td class="price">£10</td>
+  </tr>
+  <tr class="divider ticket-option" data-service="Weekend Pass + Pokémon TCG Tournament" data-amount="10">
+    <td class="label">Weekend Pass + Pokémon TCG Tournament</td><td class="price">£10</td>
+  </tr>
+  <tr class="divider ticket-option" data-service="Weekend Pass + Both Tournaments" data-amount="12">
+    <td class="label">Weekend Pass + Both Tournaments</td><td class="price">£12</td>
+  </tr>
+</table>
 </div>
 
 <script>
