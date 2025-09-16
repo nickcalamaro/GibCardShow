@@ -24,8 +24,8 @@
 
 .carousel-track img {
   flex: 0 0 auto;
-  width: 100px;
-  height: 100px;
+  width: 140px;
+  height: 140px;
   object-fit: contain;
   border-radius: 8px;
   background: #fff;
@@ -66,19 +66,23 @@
 <div class="sponsor-carousel">
   <button class="carousel-btn prev" aria-label="Previous">‹</button>
   <div class="carousel-track">
-    <img src="/img/sponsors/dicebastion-sponsor.png" alt="Dice Bastion">
-    <img src="/img/sponsors/southernlight-sponsor.png" alt="Southern Light TCG">
-    <img src="/img/sponsors/pbcs-sponsor.png" alt="PB Card Shack">
-    <img src="/img/sponsors/wise-sponsor.png" alt="Wise Collector TCG">
-    <img src="/img/sponsors/gcs-sponsor.png" alt="Gibraltar Card Show">
-    <img src="/img/sponsors/toycorner-sponsor.png" alt="Toy Corner">
-    <img src="/img/sponsors/vijay-sponsor.png" alt="Vijay">
-    <img src="/img/sponsors/cardmarket-sponsor.png" alt="Cardmarket">
+    {{ $logos := slice
+        "dicebastion-sponsor.png"
+        "southernlight-sponsor.png"
+        "pbcs-sponsor.png"
+        "wise-sponsor.png"
+        "gcs-sponsor.png"
+        "toycorner-sponsor.png"
+        "vijay-sponsor.png"
+        "cardmarket-sponsor.png"
+    }}
+    {{ range $logos }}
+      {{ $img := resources.Get (printf "img/sponsors/%s" .) | fingerprint }}
+      <img src="{{ $img.RelPermalink }}" alt="{{ replace (replace . "-sponsor.png" "") "-" " " | title }}">
+    {{ end }}
   </div>
   <button class="carousel-btn next" aria-label="Next">›</button>
 </div>
-
-
 
 
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js" defer></script>
