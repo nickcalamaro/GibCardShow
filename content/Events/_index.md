@@ -1,10 +1,9 @@
 --- 
 title: Upcoming Events
-description: Events for Tabletop Enthusiasts. Magic The Gathering drafts, Board Game Days, Warhammer Tournaments, Dungeons & Dragons Campaigns, all in a welcoming community space.
-heroStyle: basic
+description: The Gibraltar Card Show 2025 has a range of exciting events for you to enjoy! Casual commander, an MTG Standard Tournament and some Pokemon TCG Action.
 
 ---
 <!-- Cards changed with {{ $articleClasses := "flex flex-wrap article" }} -->
 
-<meta name="description" content="At Dice Bastion Gibraltar, we host a variety of events for tabletop enthusiasts. Enjoy relaxed Magic: The Gathering drafts, regular board game days, Warhammer battles, Pokémon TCG tournaments, and engaging Dungeons & Dragons campaigns in a welcoming community space.">
+<meta name="description" content="The Gibraltar Card Show 2025 has a range of exciting events for you to enjoy! Casual commander, an MTG Standard Tournament and some Pokemon TCG Action.">
 

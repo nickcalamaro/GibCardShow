@@ -4,6 +4,11 @@ Date: 2025-11-01
 Summary: 'Gibraltar&apos;s biggest MTG Tournament to Date!'
 ---
 
+
+<meta name="description" content="Compete in the Magic: The Gathering Standard Tournament at the Gibraltar Card Show 2025. Test your deck, face top players, and claim great prizes.">
+<meta property="og:image" content="featured-image.png" />
+
+
 <style>
   /* Wrapper to center the card and allow it to expand */
   .event-wrapper {
@@ -140,8 +145,10 @@ Summary: 'Gibraltar&apos;s biggest MTG Tournament to Date!'
       <div class="value">4 + Top 8</div>
     </div>
     <p>
-      Each player will play 4 rounds of best‑of‑three matches to determine rankings. After these 4 rounds,
+      Each player will play 4 rounds to determine rankings. After these 4 rounds,
       the top 8 players will proceed to single‑elimination knockout rounds until a winner is crowned.
+      <p>
+      All rounds will be played as best of three matches and last 50 minutes.
     </p>
   </div>
 
@@ -159,7 +166,7 @@ Summary: 'Gibraltar&apos;s biggest MTG Tournament to Date!'
   <div class="section">
     <div class="row">
       <div class="label">Tickets</div>
-      <div class="value"><a href="/Tickets">Available Now</a></div>
+      <div class="value"><a href="/tickets">Available Now</a></div>
     </div>
     <p>
       Tickets are now available and include entry into the Gibraltar Card Show.
