@@ -25,7 +25,7 @@ jobs:
       - name: Deploy to dev repo
         uses: peaceiris/actions-gh-pages@v3
         with:
-          personal_token: ${{ secrets.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 }}
+          personal_token: ${{ secrets.PERSONAL_TOKEN }}
           external_repository: nickcalamaro/GibCardShow-dev
           publish_branch: gh-pages
           publish_dir: ./public
