@@ -1,6 +1,9 @@
 ---
 description: The biggest trading card event in Gibraltar is back — and bigger than ever
 ---
+<meta name="description" content="Join us at the Gibraltar Card Show 2025 — the Rock’s biggest trading card event, featuring Magic, Pokemon TCG and more! Buy, trade and compete in our family‑friendly community.">
+
+
 <style>
   .event-block {
     margin-top: 0;         /* Remove top margin */

@@ -1,8 +1,11 @@
 ---
 Title: Pokémon TCG - Standard Tournament
 Date: 2025-11-02
-Summary: 'Bring down your favourite Pokémon and compete for awesome prizes!'
+Summary: 'Gibraltar&apos;s biggest Pokémon TCG Tournament ever'
 ---
+
+<meta name="description" content="Enter the Pokémon TCG Standard Tournament at the Gibraltar Card Show 2025. Battle through Swiss rounds and Top 8 for a chance to win exclusive prizes.">
+<meta property="og:image" content="featured-image.png" />
 
 <style>
   .event-card {
@@ -47,6 +50,15 @@ Summary: 'Bring down your favourite Pokémon and compete for awesome prizes!'
   html.dark .rules-section.topcut, :root.dark .rules-section.topcut, [data-theme='dark'] .rules-section.topcut {
     background: rgba(160, 48, 48, 0.6) !important;
   }
+  /* Make the image block-level and remove any margins */
+.section .row .value img {
+  display: block;            /* no baseline gap */
+  margin: 0;                 /* no extra margins */
+  max-height: 48px;          /* adjust as needed */
+  width: auto;
+  height: auto;
+  vertical-align: top;       /* extra safety */
+}
 </style>
 
 <section class="event-card">
@@ -76,13 +88,13 @@ Summary: 'Bring down your favourite Pokémon and compete for awesome prizes!'
   </div>
 
   <div class="section">
-    <div class="row"><div class="label">Prizes</div><div class="value">To be confirmed</div></div>
+    <div class="row"><div class="label">Prizes</div><div class="value"><img src="top-prize.png" style="max-height:180px; width:auto;"/></div></div>
     <p>Prizes are being provided courtesy of <a href="https://toycorner.gi/">Toy Corner</a>, our event sponsor.
-      More details will be announced soon!</p>
+      First place will take home a <strong>Prismatic Evolutions Super Premium Bundle</strong> More prizes to be announced soon!</p>
   </div>
 
   <div class="section">
-    <div class="row"><div class="label">Tickets</div><div class="value"><a href="/Tickets">Available Now</a></div></div>
+    <div class="row"><div class="label">Tickets</div><div class="value"><a href="/tickets">Available Now</a></div></div>
     <p>Tickets include entry into the Gibraltar Card Show and participation in the tournament.</p>
   </div>
 
@@ -134,9 +146,8 @@ Summary: 'Bring down your favourite Pokémon and compete for awesome prizes!'
   <div class="rules-section swiss" style="background:#d0e6ff; padding:10px; border-radius:8px; margin-bottom:12px;">
     <strong>🟦 Swiss Rounds (can end in a draw)</strong>
     <ul style="margin:8px 0 0 20px; padding:0;">
-      <li>When time is called, players must finish the current turn and then play one more full turn.</li>
-      <li>A 10‑minute overtime clock starts immediately when time is called and both turns must be finished in this time.</li>
-      <li>If no winner after that → game is a draw.</li>
+      <li>When time is called, players have ten minutes to finish the current turn and then play one more full turn.</li>
+      <li>If there is no winner after those turns, the game is a draw.</li>
     </ul>
   </div>
 
@@ -146,11 +157,11 @@ Summary: 'Bring down your favourite Pokémon and compete for awesome prizes!'
     <strong>🟥 Top Cut / Elimination (must have a winner)</strong>
     <ul style="margin:8px 0 0 20px; padding:0;">
       <li>Same procedure as above.</li>
-      <li>If 10 minutes expire and no winner:</li>
-      <li>The player with a Prize card lead is declared the winner.</li>
-      <li>If Prizes are tied → start a Tiebreaker Game (normal 6‑Prize setup).</li>
-      <li>Tiebreaker Game has a 10‑minute time limit.</li>
-      <li>The first player to establish a Prize card lead, or to win the game outright by any other method, is declared the winner.</li>
+      <li>If 10 minutes expire and there is no winner:</li>
+      <ul>
+        <li>The player with a Prize card lead is declared the winner.</li>
+        <li>If Prizes are tied a tie-breaker game (normal 6‑Prize setup) will be played to determine the winner. The first player to establish a Prize card lead, or to win the game outright by any other method, is the winner.</li>    
+      <ul>
     </ul>
   </div>
 </div>
