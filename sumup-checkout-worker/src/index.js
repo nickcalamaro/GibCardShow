@@ -65,11 +65,17 @@ export default {
         redirect_url: redirectUrl
       };
 
-      const sumupRes = await fetch('https://api.sumup.com/v0.1/checkouts', {
-        method: 'POST',
+      // Example: verifying a checkout
+      const sumupRes = await fetch(`https://api.sumup.com/v0.1/checkouts/${checkout_id}`, {
+        headers: { 'Authorization': `Bearer ${env.SUMUP_SECRET_KEY}` }
+      });
+
+      // Example: sending email
+      const res = await fetch("https://api.mailersend.com/v1/email", {
+        method: "POST",
         headers: {
-          'Authorization': `Bearer ${env.SUMUP_SECRET_KEY}`,
-          'Content-Type': 'application/json'
+          "Authorization": `Bearer ${env.MAILERSEND_API_TOKEN}`,
+          "Content-Type": "application/json"
         },
         body: JSON.stringify(body)
       });

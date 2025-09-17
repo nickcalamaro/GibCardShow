@@ -200,97 +200,119 @@ Proceed to Payment
 </form>
 </div>
 
+<div id="sumup-card" style="display:none;"></div>
+
+
+<script src="https://gateway.sumup.com/gateway/ecom/card/v2/sdk.js"></script>
 <script>
 (function(){
-  function init() {
-    const params = new URLSearchParams(window.location.search);
-    const serviceFromURL = params.get('service');
-    if (serviceFromURL) {
-      document.getElementById('service').value = serviceFromURL;
-      document.getElementById('formHeading').textContent = `🎟️ ${serviceFromURL}`;
+function init() {
+  const params = new URLSearchParams(window.location.search);
+  const serviceFromURL = params.get('service');
+  if (serviceFromURL) {
+    document.getElementById('service').value = serviceFromURL;
+    document.getElementById('formHeading').textContent = `🎟️ ${serviceFromURL}`;
+  }
+
+  const privacyCheckbox = document.getElementById('privacyConsent');
+  const marketingCheckbox = document.getElementById('marketingConsent');
+  const submitBtn = document.getElementById('submitBtn');
+  const tooltip = document.getElementById('tooltip');
+
+  // Reset checkboxes
+  if (privacyCheckbox) privacyCheckbox.checked = false;
+  if (marketingCheckbox) marketingCheckbox.checked = false;
+
+  // Quantity controls
+  const qtyInput = document.getElementById('quantity');
+  const decBtn = document.getElementById('decreaseQty');
+  const incBtn = document.getElementById('increaseQty');
+
+  decBtn.addEventListener('click', () => {
+    let val = parseInt(qtyInput.value, 10) || 1;
+    if (val > 1) qtyInput.value = val - 1;
+  });
+
+  incBtn.addEventListener('click', () => {
+    let val = parseInt(qtyInput.value, 10) || 1;
+    qtyInput.value = val + 1;
+  });
+
+  // Enable/disable button based on privacy checkbox
+  function updateButtonState() {
+    submitBtn.disabled = !privacyCheckbox.checked;
+  }
+  updateButtonState();
+
+  submitBtn.addEventListener('click', (e) => {
+    if (submitBtn.disabled) {
+      e.preventDefault();
+      tooltip.style.opacity = 1;
+      setTimeout(() => tooltip.style.opacity = 0, 2000);
+    }
+  });
+
+  privacyCheckbox.addEventListener('change', updateButtonState);
+
+  // Form submit handler
+  document.getElementById('paymentForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const formData = Object.fromEntries(new FormData(e.target).entries());
+    formData.quantity = Math.max(1, parseInt(formData.quantity, 10) || 1);
+
+    if (!formData.service) {
+      alert('No ticket type selected. Please return to the tickets page and choose one.');
+      return;
     }
 
-    const privacyCheckbox = document.getElementById('privacyConsent');
-    const marketingCheckbox = document.getElementById('marketingConsent');
-    const submitBtn = document.getElementById('submitBtn');
-    const tooltip = document.getElementById('tooltip');
-
-    // ✅ Only reset the checkboxes, leave other fields alone
-    if (privacyCheckbox) privacyCheckbox.checked = false;
-    if (marketingCheckbox) marketingCheckbox.checked = false;
-
-    // Quantity controls
-    const qtyInput = document.getElementById('quantity');
-    const decBtn = document.getElementById('decreaseQty');
-    const incBtn = document.getElementById('increaseQty');
-
-    decBtn.addEventListener('click', () => {
-      let val = parseInt(qtyInput.value, 10) || 1;
-      if (val > 1) qtyInput.value = val - 1;
+    // Call Worker to create checkout
+    const res = await fetch('https://sumup-checkout-worker.ncalamaro.workers.dev/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(formData)
     });
 
-    incBtn.addEventListener('click', () => {
-      let val = parseInt(qtyInput.value, 10) || 1;
-      qtyInput.value = val + 1;
-    });
-// Ensure quantity is at least 1 if manually changed
-
-    updateButtonState();
-
-    function updateButtonState() {
-      submitBtn.disabled = !privacyCheckbox.checked;
+    const data = await res.json();
+    if (!data.checkout_id) {
+      alert(data.error || 'Error creating checkout');
+      return;
     }
 
-    submitBtn.addEventListener('click', (e) => {
-      if (submitBtn.disabled) {
-        e.preventDefault();
-        tooltip.style.opacity = 1;
-        setTimeout(() => tooltip.style.opacity = 0, 2000);
+    // Hide form, show widget container
+    document.querySelector('.form-card').style.display = 'none';
+    document.getElementById('sumup-card').style.display = 'block';
+
+    // Mount SumUp widget
+    SumUpCard.mount({
+      id: 'sumup-card',
+      checkoutId: data.checkout_id,
+      onResponse: function(type, body) {
+        console.log('Widget response', type, body);
+
+        // Post back to Worker for verification
+        fetch('https://payment-worker.ncalamaro.workers.dev/', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ checkout_id: data.checkout_id, type, body })
+        });
       }
     });
-
-    privacyCheckbox.addEventListener('change', updateButtonState);
-
-document.getElementById('paymentForm').addEventListener('submit', async (e) => {
-  e.preventDefault();
-  const formData = Object.fromEntries(new FormData(e.target).entries());
-
-  // Ensure quantity is at least 1
-  formData.quantity = Math.max(1, parseInt(formData.quantity, 10) || 1);
-
-  if (!formData.service) {
-    alert('No ticket type selected. Please return to the tickets page and choose one.');
-    return;
-  }
-
-  const res = await fetch('https://sumup-checkout-worker.ncalamaro.workers.dev/', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(formData)
   });
-
-  const data = await res.json();
-  if (data.checkout_url) {
-    window.location.href = data.checkout_url;
-  } else {
-    alert(data.error || 'Error creating checkout');
-  }
-});
-
 }
 
-  // Run on normal load
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init, { once: true });
-  } else {
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', init, { once: true });
+} else {
+  init();
+}
+
+window.addEventListener('pageshow', (e) => {
+  if (e.persisted || (performance.getEntriesByType && performance.getEntriesByType('navigation')[0]?.type === 'back_forward')) {
     init();
   }
-
-  // Also run when returning via back/forward cache
-  window.addEventListener('pageshow', (e) => {
-    if (e.persisted || (performance.getEntriesByType && performance.getEntriesByType('navigation')[0]?.type === 'back_forward')) {
-      init();
-    }
-  });
+});
 })();
 </script>
+
+
+
