@@ -146,173 +146,178 @@ border-color: #666;
 color: #fff;
 }
 </style>
+<div id="formCard" class="form-card w-full max-w-md mx-auto pt-2 px-6 pb-6 bg-white/90 backdrop-blur rounded-lg shadow-lg">
+  <h2 id="formHeading" class="text-lg font-semibold text-center text-white bg-gradient-to-r from-black to-red-500 py-3 rounded-md mb-6">
+    🎟️ Buy Your Tickets
+  </h2>
 
-<div class="form-card w-full max-w-md mx-auto pt-2 px-6 pb-6 bg-white/90 backdrop-blur rounded-lg shadow-lg">
-<h2 id="formHeading" class="text-lg font-semibold text-center text-white bg-gradient-to-r from-black to-red-500 py-3 rounded-md mb-6">
-🎟️ Buy Your Tickets
-</h2>
+  <form id="paymentForm" class="space-y-4" autocomplete="off">
+    <label class="block">
+      <span class="text-sm font-medium text-gray-700 dark:text-gray-200">Your Name</span>
+      <input type="text" name="name" required autocomplete="name"
+        class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-neutral-800 dark:text-white focus:border-red-500 focus:ring-red-500 sm:text-sm" />
+    </label>
 
-<form id="paymentForm" class="space-y-4" autocomplete="off">
-<label class="block">
-<span class="text-sm font-medium text-gray-700 dark:text-gray-200">Your Name</span>
-<input type="text" name="name" required autocomplete="name"
-class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-neutral-800 dark:text-white focus:border-red-500 focus:ring-red-500 sm:text-sm" />
-</label>
+    <label class="block pb-4">
+      <span class="text-sm font-medium text-gray-700 dark:text-gray-200">Your Email</span>
+      <input type="email" name="email" required autocomplete="email"
+        class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-neutral-800 dark:text-white focus:border-red-500 focus:ring-red-500 sm:text-sm" />
+    </label>
 
-<label class="block pb-4">
-<span class="text-sm font-medium text-gray-700 dark:text-gray-200">Your Email</span>
-<input type="email" name="email" required autocomplete="email"
-class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-neutral-800 dark:text-white focus:border-red-500 focus:ring-red-500 sm:text-sm" />
-</label>
+    <input type="hidden" name="service" id="service">
 
-<input type="hidden" name="service" id="service">
+    <div class="quantity-row">
+      <span class="text-sm font-medium text-gray-700 dark:text-gray-200">Number of Tickets</span>
+      <div class="quantity-selector">
+        <button type="button" id="decreaseQty">−</button>
+        <input type="number" name="quantity" id="quantity" value="1" min="1"
+          class="dark:border-gray-600 dark:bg-neutral-800 dark:text-white focus:border-red-500 focus:ring-red-500 sm:text-sm" />
+        <button type="button" id="increaseQty">+</button>
+      </div>
+    </div>
 
-<div class="quantity-row">
-  <span class="text-sm font-medium text-gray-700 dark:text-gray-200">Number of Tickets</span>
-  <div class="quantity-selector">
-    <button type="button" id="decreaseQty">−</button>
-    <input type="number" name="quantity" id="quantity" value="1" min="1"
-      class="dark:border-gray-600 dark:bg-neutral-800 dark:text-white focus:border-red-500 focus:ring-red-500 sm:text-sm" />
-    <button type="button" id="increaseQty">+</button>
-  </div>
-</div>
+    <label class="flex items-start space-x-2 pb-2">
+      <input type="checkbox" id="privacyConsent" name="privacyConsent" autocomplete="off"
+        class="mt-1 h-5 w-5 rounded-md border-gray-300 dark:border-gray-600 text-red-500 focus:ring-red-500">
+      <span class="text-sm text-gray-700 dark:text-gray-200">
+        I have read and accept the <a href="/privacy-policy" target="_blank" class="text-red-500 underline">privacy policy</a>.
+      </span>
+    </label>
 
-<label class="flex items-start space-x-2 pb-2">
-<input type="checkbox" id="privacyConsent" name="privacyConsent" autocomplete="off"
-class="mt-1 h-5 w-5 rounded-md border-gray-300 dark:border-gray-600 text-red-500 focus:ring-red-500">
-<span class="text-sm text-gray-700 dark:text-gray-200">
-I have read and accept the <a href="/privacy-policy" target="_blank" class="text-red-500 underline">privacy policy</a>.
-</span>
-</label>
+    <label class="flex items-start space-x-2 pb-4">
+      <input type="checkbox" id="marketingConsent" name="marketingConsent" autocomplete="off"
+        class="mt-1 h-5 w-5 rounded-md border-gray-300 dark:border-gray-600 text-red-500 focus:ring-red-500">
+      <span class="text-sm text-gray-700 dark:text-gray-200">
+        I would like to receive marketing communications from Gibraltar Card Show.
+      </span>
+    </label>
 
-<label class="flex items-start space-x-2 pb-4">
-<input type="checkbox" id="marketingConsent" name="marketingConsent" autocomplete="off"
-class="mt-1 h-5 w-5 rounded-md border-gray-300 dark:border-gray-600 text-red-500 focus:ring-red-500">
-<span class="text-sm text-gray-700 dark:text-gray-200">
-I would like to receive marketing communications from Gibraltar Card Show.
-</span>
-</label>
-
-<button id="submitBtn" type="submit" disabled class="ticket-btn group">
-Proceed to Payment
-<span id="tooltip" class="tooltip">Please accept the Privacy Policy to proceed</span>
-</button>
-</form>
+    <button id="submitBtn" type="submit" disabled class="ticket-btn group">
+      Proceed to Payment
+      <span id="tooltip" class="tooltip">Please accept the Privacy Policy to proceed</span>
+    </button>
+  </form>
 </div>
 
 <div id="sumup-card" style="display:none;"></div>
-
-
 <script src="https://gateway.sumup.com/gateway/ecom/card/v2/sdk.js"></script>
 <script>
-(function(){
-function init() {
-  const params = new URLSearchParams(window.location.search);
-  const serviceFromURL = params.get('service');
-  if (serviceFromURL) {
-    document.getElementById('service').value = serviceFromURL;
-    document.getElementById('formHeading').textContent = `🎟️ ${serviceFromURL}`;
-  }
+  let sumupWidget = null;
 
-  const privacyCheckbox = document.getElementById('privacyConsent');
-  const marketingCheckbox = document.getElementById('marketingConsent');
-  const submitBtn = document.getElementById('submitBtn');
-  const tooltip = document.getElementById('tooltip');
-
-  // Reset checkboxes
-  if (privacyCheckbox) privacyCheckbox.checked = false;
-  if (marketingCheckbox) marketingCheckbox.checked = false;
-
-  // Quantity controls
-  const qtyInput = document.getElementById('quantity');
-  const decBtn = document.getElementById('decreaseQty');
-  const incBtn = document.getElementById('increaseQty');
-
-  decBtn.addEventListener('click', () => {
-    let val = parseInt(qtyInput.value, 10) || 1;
-    if (val > 1) qtyInput.value = val - 1;
-  });
-
-  incBtn.addEventListener('click', () => {
-    let val = parseInt(qtyInput.value, 10) || 1;
-    qtyInput.value = val + 1;
-  });
-
-  // Enable/disable button based on privacy checkbox
-  function updateButtonState() {
-    submitBtn.disabled = !privacyCheckbox.checked;
-  }
-  updateButtonState();
-
-  submitBtn.addEventListener('click', (e) => {
-    if (submitBtn.disabled) {
-      e.preventDefault();
-      tooltip.style.opacity = 1;
-      setTimeout(() => tooltip.style.opacity = 0, 2000);
-    }
-  });
-
-  privacyCheckbox.addEventListener('change', updateButtonState);
-
-  // Form submit handler
-  document.getElementById('paymentForm').addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const formData = Object.fromEntries(new FormData(e.target).entries());
-    formData.quantity = Math.max(1, parseInt(formData.quantity, 10) || 1);
-
-    if (!formData.service) {
-      alert('No ticket type selected. Please return to the tickets page and choose one.');
-      return;
-    }
-
-    // Call Worker to create checkout
-    const res = await fetch('https://sumup-checkout-worker.ncalamaro.workers.dev/', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(formData)
-    });
-
-    const data = await res.json();
-    if (!data.checkout_id) {
-      alert(data.error || 'Error creating checkout');
-      return;
-    }
-
-    // Hide form, show widget container
-    document.querySelector('.form-card').style.display = 'none';
+  function mountSumUpWidget(checkoutId) {
+    document.getElementById('formCard').style.display = 'none';
     document.getElementById('sumup-card').style.display = 'block';
-
-    // Mount SumUp widget
-    SumUpCard.mount({
+    sumupWidget = SumUpCard.mount({
       id: 'sumup-card',
-      checkoutId: data.checkout_id,
+      checkoutId,
       onResponse: function(type, body) {
         console.log('Widget response', type, body);
-
-        // Post back to Worker for verification
-        fetch('https://payment-worker.ncalamaro.workers.dev/', {
+        fetch('/api/payment-callback', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ checkout_id: data.checkout_id, type, body })
+          body: JSON.stringify({ checkout_id: checkoutId, type, body })
         });
       }
     });
-  });
-}
+  }
 
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', init, { once: true });
-} else {
-  init();
-}
+  function resetSumUpWidget() {
+    if (sumupWidget && typeof sumupWidget.unmount === 'function') {
+      sumupWidget.unmount();
+      sumupWidget = null;
+    }
+    document.getElementById('sumup-card').style.display = 'none';
+    document.getElementById('formCard').style.display = 'block';
+  }
 
-window.addEventListener('pageshow', (e) => {
-  if (e.persisted || (performance.getEntriesByType && performance.getEntriesByType('navigation')[0]?.type === 'back_forward')) {
+  function attachFormLogic() {
+    const privacyCheckbox = document.getElementById('privacyConsent');
+    const marketingCheckbox = document.getElementById('marketingConsent');
+    const submitBtn = document.getElementById('submitBtn');
+    const tooltip = document.getElementById('tooltip');
+    const qtyInput = document.getElementById('quantity');
+    const decBtn = document.getElementById('decreaseQty');
+    const incBtn = document.getElementById('increaseQty');
+
+    // Reset checkboxes
+    if (privacyCheckbox) privacyCheckbox.checked = false;
+    if (marketingCheckbox) marketingCheckbox.checked = false;
+
+    // Quantity controls
+    decBtn.addEventListener('click', () => {
+      let val = parseInt(qtyInput.value, 10) || 1;
+      if (val > 1) qtyInput.value = val - 1;
+    });
+    incBtn.addEventListener('click', () => {
+      let val = parseInt(qtyInput.value, 10) || 1;
+      qtyInput.value = val + 1;
+    });
+
+    // Enable/disable button
+    function updateButtonState() {
+      submitBtn.disabled = !privacyCheckbox.checked;
+    }
+    updateButtonState();
+    privacyCheckbox.addEventListener('change', updateButtonState);
+
+    submitBtn.addEventListener('click', (e) => {
+      if (submitBtn.disabled) {
+        e.preventDefault();
+        tooltip.style.opacity = 1;
+        setTimeout(() => tooltip.style.opacity = 0, 2000);
+      }
+    });
+
+    // Form submit
+    document.getElementById('paymentForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const formData = Object.fromEntries(new FormData(e.target).entries());
+      formData.quantity = Math.max(1, parseInt(formData.quantity, 10) || 1);
+
+      if (!formData.service) {
+        alert('No ticket type selected.');
+        return;
+      }
+
+      const res = await fetch('https://sumup-widget-worker.ncalamaro.workers.dev/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData)
+      });
+      const data = await res.json();
+      if (!data.checkout_id) {
+        alert(data.error || 'Error creating checkout');
+        return;
+      }
+
+      mountSumUpWidget(data.checkout_id);
+    });
+  }
+
+  function init() {
+    // Reset widget only
+    resetSumUpWidget();
+
+    // Update heading/service from URL
+    const params = new URLSearchParams(window.location.search);
+    const serviceFromURL = params.get('service');
+    if (serviceFromURL) {
+      document.getElementById('service').value = serviceFromURL;
+      document.getElementById('formHeading').textContent = `🎟️ ${serviceFromURL}`;
+    }
+  }
+
+  // Attach form logic once
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+      attachFormLogic();
+      init();
+    }, { once: true });
+  } else {
+    attachFormLogic();
     init();
   }
-});
-})();
+
+  // Reset on back/forward navigation
+  window.addEventListener('pageshow', init);
 </script>
-
-
-
