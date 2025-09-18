@@ -4,23 +4,23 @@
  */
 {
 	"$schema": "node_modules/wrangler/config-schema.json",
-	"name": "sumup-widget-worker",
+	"name": "sumup-reconcile",
 	"main": "src/index.js",
-	"compatibility_date": "2025-09-17",
+	"compatibility_date": "2025-09-18",
 	"observability": {
 		"enabled": true
 	},
 
-	  "d1_databases": [
-    {
-      "binding": "sumupDB",                // must match env.sumupDB in your code
-      "database_name": "sumup-payments",   // the name of your D1 database
-      "database_id": "8f4e589a-cbe8-4308-b1d4-cf9811d63393" // the UUID from dashboard
-    }
-  ]
 
+	    // Bindings
+    "d1_databases": [
+        {
+            "binding": "sumupDB", // must match what you use in your Worker code
+            "database_name": "sumup-payments",
+            "database_id": "8f4e589a-cbe8-4308-b1d4-cf9811d63393"
+        }
+    ]
 
-	
 	/**
 	 * Smart Placement
 	 * Docs: https://developers.cloudflare.com/workers/configuration/smart-placement/#smart-placement
