@@ -1,0 +1,29 @@
+<script>
+  let sumupWidget = null;
+
+  function mountSumUpWidget(checkoutId) {
+    document.getElementById('formCard').style.display = 'none';
+    document.getElementById('sumup-card').style.display = 'block';
+    sumupWidget = SumUpCard.mount({
+      id: 'sumup-card',
+      checkoutId,
+      onResponse: function(type, body) {
+        console.log('Widget response', type, body);
+        fetch('https://payment-worker.ncalamaro.workers.dev/payment-callback', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ checkout_id: checkoutId, type, body })
+        });
+      }
+    });
+  }
+
+  function resetSumUpWidget() {
+    if (sumupWidget && typeof sumupWidget.unmount === 'function') {
+      sumupWidget.unmount();
+      sumupWidget = null;
+    }
+    document.getElementById('sumup-card').style.display = 'none';
+    document.getElementById('formCard').style.display = 'block';
+  }
+</script>

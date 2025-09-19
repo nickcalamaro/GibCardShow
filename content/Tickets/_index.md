@@ -6,7 +6,7 @@ description: "Get your tickets for the Gibraltar Card Show 2025 — the Rock’s
 image: "/img/gcs-logo.png"
 showTitle: false
 layoutBackgroundHeaderSpace: false
-
+layout: single
 ---
 
 <!DOCTYPE html>
@@ -192,25 +192,36 @@ document.addEventListener('DOMContentLoaded', () => {
   const closeBtn = document.getElementById('closePaymentModal');
   const formHeading = document.getElementById('formHeading');
   const serviceInput = document.getElementById('service');
-  const amountInput = document.getElementById('amount');
 
-  function openModalWithTicket(service, amount) {
-    if (formHeading) formHeading.textContent = `🎟️ ${service}`;
+  function openPaymentModalFor(service) {
+    // Reset widget + show form
+    if (typeof resetSumUpWidget === 'function') resetSumUpWidget();
+
+    // Set service + heading
     if (serviceInput) serviceInput.value = service;
-    if (amountInput) amountInput.value = amount;
+    if (formHeading) formHeading.textContent = `🎟️ ${service}`;
+
     modal.style.display = 'block';
   }
 
+  function closePaymentModal() {
+    modal.style.display = 'none';
+    if (typeof resetSumUpWidget === 'function') resetSumUpWidget();
+  }
+
+  // Hook up ticket rows
   document.querySelectorAll('.ticket-option').forEach(row => {
     row.addEventListener('click', () => {
-      openModalWithTicket(row.dataset.service, row.dataset.amount);
+      openPaymentModalFor(row.dataset.service);
     });
   });
 
-  closeBtn.addEventListener('click', () => { modal.style.display = 'none'; });
-  window.addEventListener('click', e => { if (e.target === modal) modal.style.display = 'none'; });
+  // Close handlers
+  closeBtn.addEventListener('click', closePaymentModal);
+  window.addEventListener('click', e => { if (e.target === modal) closePaymentModal(); });
 });
 </script>
+
 
 </body>
 </html>
