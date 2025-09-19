@@ -143,22 +143,21 @@ async function handleCreateCheckout(req, env) {
     });
   }
 
-  // 2. Insert consent record
-await env.DB.prepare(
-  `INSERT INTO gcs_consent (name, email, privacy_consent, marketing_consent, updated_at)
-   VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP)
-   ON CONFLICT(email) DO UPDATE SET
-     name = excluded.name,
-     privacy_consent = excluded.privacy_consent,
-     marketing_consent = excluded.marketing_consent,
-     updated_at = CURRENT_TIMESTAMP`
-).bind(
-  name,
-  email,
-  privacyConsent ? 1 : 0,
-  marketingConsent ? 1 : 0
-).run();
-
+  // 2. Insert consent record (update if exists)
+  await env.DB.prepare(
+    `INSERT INTO gcs_consent (name, email, privacy_consent, marketing_consent, updated_at)
+     VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP)
+     ON CONFLICT(email) DO UPDATE SET
+       name = excluded.name,
+       privacy_consent = excluded.privacy_consent,
+       marketing_consent = excluded.marketing_consent,
+       updated_at = CURRENT_TIMESTAMP`
+  ).bind(
+    name,
+    email,
+    privacyConsent ? 1 : 0,
+    marketingConsent ? 1 : 0
+  ).run();
 
   // 3. Insert pending payment row
   await env.DB.prepare(
@@ -197,8 +196,70 @@ async function handlePaymentCallback(req, env) {
     .bind(status, txnId, checkout_id)
     .run();
 
+  // If paid, send confirmation email
+  if (status === "PAID") {
+    const row = await env.DB.prepare(
+      `SELECT name, email, service FROM payments WHERE checkout_id = ?`
+    ).bind(checkout_id).first();
+
+    if (row) {
+      await sendConfirmationEmail(env, row.name, row.email, row.service);
+    }
+  }
+
   return new Response(JSON.stringify({ ok: true, status }), {
     headers: { "Content-Type": "application/json" },
   });
 }
 
+// --- MailerSend Helper ---
+
+async function sendConfirmationEmail(env, name, email, service) {
+  const htmlBody = `
+  <div style="font-family: Arial, sans-serif; background-color:#f9f9f9; padding:20px;">
+    <div style="max-width:600px; margin:0 auto; background:#ffffff; border-radius:8px; overflow:hidden; border:1px solid #ddd;">
+      <div style="background-color:#d71920; color:#fff; padding:20px; text-align:center;">
+        <h1 style="margin:0;">Gibraltar Card Show 2025</h1>
+      </div>
+      <div style="padding:20px; color:#333;">
+        <p>Hey Collector,</p>
+        <p>First off—thank you for snagging your ticket to the Gibraltar Card Show 2025! 🥳</p>
+        <p>You’ve officially unlocked:</p>
+        <ul>
+          <li>✔️ Access to the biggest collectors event on the Rock</li>
+          <li>✔️ The right to brag to your friends (“I’ve got my ticket, do you?”)</li>
+          <li>✔️ A guaranteed weekend full of shiny cardboard, epic trades, and possibly… new best friends</li>
+        </ul>
+        <p>Your ticket is confirmed, safe, and already doing little celebratory cartwheels in our inbox. 💃</p>
+        <p>All that’s left? Bring your passion, your decks, and maybe a lucky charm (because who knows what you’ll pull).</p>
+        <p><strong>We can’t wait to see you at the Catholic Community Centre on 1–2 November 2025.</strong></p>
+        <p>Until then, keep your cards sleeved and your dice rolling. 😉</p>
+        <p>Cheers,<br>The Gibraltar Card Show Team</p>
+      </div>
+    </div>
+  </div>
+  `;
+
+  const res = await fetch("https://api.mailersend.com/v1/email", {
+    method: "POST",
+    headers: {
+      "Authorization": `Bearer ${env.MAILERSEND_TOKEN}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      from: {
+        email: "noreply@gibcardshow.com",
+        name: "Gibraltar Card Show",
+      },
+      to: [{ email, name }],
+      subject: "Your Gibraltar Card Show 2025 Ticket Confirmation",
+      html: htmlBody,
+      text: `Hey Collector,\n\nThank you for snagging your ticket to the Gibraltar Card Show 2025! 🥳\n\nSee you at the Catholic Community Centre on 1–2 November 2025.\n\nCheers,\nThe Gibraltar Card Show Team`,
+    }),
+  });
+
+  if (!res.ok) {
+    const err = await res.text();
+    console.error("MailerSend error:", err);
+  }
+}

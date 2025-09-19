@@ -6,7 +6,7 @@ description: "Get your tickets for the Gibraltar Card Show 2025 — the Rock’s
 image: "/img/gcs-logo.png"
 showTitle: false
 layoutBackgroundHeaderSpace: false
-
+layout: single
 ---
 
 <!DOCTYPE html>
