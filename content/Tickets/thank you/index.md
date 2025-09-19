@@ -1,8 +1,8 @@
 ---
 title: Thank You!
-slug: 'thank-you'
 showDate: False
 showPagination: False
+showHero: False
 ---
 
 Thank you for your purchase! You should receive an email from us confirming your entry! 

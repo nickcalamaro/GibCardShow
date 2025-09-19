@@ -1,117 +1,204 @@
 export default {
-  async fetch(request, env) {
-    if (request.method !== 'POST') {
-      return new Response('Method not allowed', { status: 405 });
-    }
-
+  async fetch(req, env) {
     try {
-      const event = await request.json();
-      console.log('Incoming webhook:', event);
+      const url = new URL(req.url);
 
-      if (
-        event.event_type === 'checkout.status.updated' ||
-        event.event_type === 'checkout.status.updated.v1'
-      ) {
-        const { checkout_id, reference, status, customer_email } = event.payload;
-
-        // Update the matching row
-        await env.sumupDB
-          .prepare(
-            `UPDATE payments
-             SET status = ?
-             WHERE checkout_id = ? OR checkout_reference = ?`
-          )
-          .bind(status.toUpperCase(), checkout_id, reference)
-          .run();
-
-        // If payment completed, send confirmation email
-        if (status.toLowerCase() === 'paid' && customer_email) {
-          await sendConfirmationEmail(customer_email, reference, env);
-        }
-
-        return new Response('OK', { status: 200 });
+      // Handle CORS preflight
+      if (req.method === "OPTIONS") {
+        return handleOptions(req);
       }
 
-      return new Response('Ignored', { status: 200 });
+      if (url.pathname === "/create-checkout" && req.method === "POST") {
+        const resp = await handleCreateCheckout(req, env);
+        return withCors(req, resp);
+      }
+
+      if (url.pathname === "/payment-callback" && req.method === "POST") {
+        const resp = await handlePaymentCallback(req, env);
+        return withCors(req, resp);
+      }
+
+      return withCors(req, new Response("Not found", { status: 404 }));
     } catch (err) {
-      console.error(err);
-      return new Response(`Error: ${err.message}`, { status: 500 });
+      console.error("Worker error:", err);
+      return withCors(
+        req,
+        new Response(JSON.stringify({ error: err.message }), {
+          status: 500,
+          headers: { "Content-Type": "application/json" },
+        })
+      );
     }
-  }
+  },
 };
 
-// Helper function to send email via MailerSend API
-async function sendConfirmationEmail(to, reference, env) {
-  const htmlContent = `
-  <div style="font-family: Arial, sans-serif; background-color: #f9f9f9; padding: 30px;">
-    <div style="max-width: 600px; margin: auto; background: #fff; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.1);">
-      <div style="background: linear-gradient(135deg, #ff4b2b, #ff416c); color: white; padding: 20px; text-align: center;">
-        <h1 style="margin: 0;">Gibraltar Card Show 2025</h1>
-      </div>
-      <div style="padding: 30px; color: #333; line-height: 1.6;">
-        <p>Hey Collector,</p>
-        <p>First off—thank you for snagging your ticket to the <strong>Gibraltar Card Show 2025</strong>! 🥳</p>
-        <p>You’ve officially unlocked:</p>
-        <ul style="list-style: none; padding: 0;">
-          <li>✔️ Access to the biggest collectors event on the Rock</li>
-          <li>✔️ The right to brag to your friends (“I’ve got my ticket, do you?”)</li>
-          <li>✔️ A guaranteed weekend full of shiny cardboard, epic trades, and possibly… new best friends</li>
-        </ul>
-        <p>Your ticket is confirmed, safe, and already doing little celebratory cartwheels in our inbox. 💃</p>
-        <p>All that’s left? Bring your passion, your decks, and maybe a lucky charm (because who knows what you’ll pull).</p>
-        <p><strong>We can’t wait to see you at the Catholic Community Centre on 1–2 November 2025.</strong></p>
-        <p>Until then, keep your cards sleeved and your dice rolling. 😉</p>
-        <p style="margin-top: 30px;">Cheers,<br>The Gibraltar Card Show Team</p>
-        <hr style="margin: 30px 0; border: none; border-top: 1px solid #eee;">
-        <p style="font-size: 12px; color: #888;">Payment reference: <strong>${reference}</strong></p>
-      </div>
-    </div>
-  </div>
-  `;
+// --- CORS Helpers ---
 
-  const textContent = `
-Hey Collector,
+function handleOptions(req) {
+  return new Response(null, { headers: corsHeaders(req) });
+}
 
-First off—thank you for snagging your ticket to the Gibraltar Card Show 2025! 🥳
+function withCors(req, resp) {
+  const headers = new Headers(resp.headers);
+  for (const [k, v] of Object.entries(corsHeaders(req))) {
+    headers.set(k, v);
+  }
+  return new Response(resp.body, {
+    status: resp.status,
+    headers,
+  });
+}
 
-You’ve officially unlocked:
-- Access to the biggest collectors event on the Rock
-- The right to brag to your friends (“I’ve got my ticket, do you?”)
-- A guaranteed weekend full of shiny cardboard, epic trades, and possibly… new best friends
-
-Your ticket is confirmed, safe, and already doing little celebratory cartwheels in our inbox. 💃
-
-All that’s left? Bring your passion, your decks, and maybe a lucky charm (because who knows what you’ll pull).
-
-We can’t wait to see you at the Catholic Community Centre on 1–2 November 2025.
-
-Until then, keep your cards sleeved and your dice rolling. 😉
-
-Cheers,
-The Gibraltar Card Show Team
-
-Payment reference: ${reference}
-`;
-
-  const body = {
-    from: { email: "noreply@gibcardshow.com", name: "Gibraltar Card Show" },
-    to: [{ email: to }],
-    subject: "Your Gibraltar Card Show Ticket Confirmation",
-    text: textContent,
-    html: htmlContent,
+function corsHeaders(req) {
+  const origin = req.headers.get("Origin");
+  const allowedOrigins = [
+    "http://localhost:1313",
+    "https://gibcardshow.com",
+    "https://www.gibcardshow.com",
+    "https://dev.gibcardshow.com",
+  ];
+  return {
+    "Access-Control-Allow-Origin": allowedOrigins.includes(origin) ? origin : "*",
+    "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+    "Access-Control-Allow-Headers": "Content-Type, Authorization",
   };
+}
 
-  const res = await fetch("https://api.mailersend.com/v1/email", {
+// --- SumUp Token Helper ---
+
+async function getAccessToken(env) {
+  const res = await fetch("https://api.sumup.com/token", {
     method: "POST",
-    headers: {
-      "Authorization": `Bearer ${env.MAILERSEND_API_TOKEN}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(body),
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body: new URLSearchParams({
+      grant_type: "refresh_token",
+      client_id: env.SUMUP_CLIENT_ID,
+      client_secret: env.SUMUP_CLIENT_SECRET,
+      refresh_token: env.SUMUP_REFRESH_TOKEN,
+    }),
   });
 
+  const data = await res.json();
   if (!res.ok) {
-    const errText = await res.text();
-    console.error("MailerSend error:", errText);
+    throw new Error("Failed to refresh token: " + JSON.stringify(data));
   }
+  return data.access_token;
 }
+
+// --- Create Checkout ---
+
+async function handleCreateCheckout(req, env) {
+  const { name, email, service, quantity, privacyConsent, marketingConsent } = await req.json();
+
+  console.log("Incoming form data:", { name, email, service, quantity, privacyConsent, marketingConsent });
+
+  // 1. Look up product info
+  const productRow = await env.DB.prepare(
+    `SELECT amount, currency FROM products WHERE service = ?`
+  ).bind(service).first();
+
+  if (!productRow) {
+    return new Response(JSON.stringify({ error: "Unknown service" }), {
+      status: 400,
+      headers: { "Content-Type": "application/json" },
+    });
+  }
+
+  const amount = productRow.amount * quantity;
+  const currency = productRow.currency || "GBP";
+  const checkoutRef = crypto.randomUUID();
+
+  console.log("Checkout payload:", {
+    checkout_reference: checkoutRef,
+    amount,
+    currency,
+    merchant_code: env.SUMUP_MERCHANT_CODE,
+    description: service,
+  });
+
+  const accessToken = await getAccessToken(env);
+
+  const res = await fetch("https://api.sumup.com/v0.1/checkouts", {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      checkout_reference: checkoutRef,
+      amount,
+      currency,
+      merchant_code: env.SUMUP_MERCHANT_CODE,
+      description: service,
+    }),
+  });
+
+  const data = await res.json();
+  console.log("SumUp response:", data);
+
+  if (!res.ok) {
+    return new Response(JSON.stringify({ error: data }), {
+      status: res.status,
+      headers: { "Content-Type": "application/json" },
+    });
+  }
+
+  // 2. Insert consent record
+await env.DB.prepare(
+  `INSERT INTO gcs_consent (name, email, privacy_consent, marketing_consent, updated_at)
+   VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP)
+   ON CONFLICT(email) DO UPDATE SET
+     name = excluded.name,
+     privacy_consent = excluded.privacy_consent,
+     marketing_consent = excluded.marketing_consent,
+     updated_at = CURRENT_TIMESTAMP`
+).bind(
+  name,
+  email,
+  privacyConsent ? 1 : 0,
+  marketingConsent ? 1 : 0
+).run();
+
+
+  // 3. Insert pending payment row
+  await env.DB.prepare(
+    `INSERT INTO payments (name, email, service, amount, currency, status, checkout_id, checkout_reference, quantity)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`
+  )
+    .bind(name, email, service, amount, currency, "PENDING", data.id, checkoutRef, quantity)
+    .run();
+
+  return new Response(JSON.stringify({ checkout_id: data.id }), {
+    headers: { "Content-Type": "application/json" },
+  });
+}
+
+// --- Payment Callback ---
+
+async function handlePaymentCallback(req, env) {
+  const { checkout_id } = await req.json();
+  const accessToken = await getAccessToken(env);
+
+  const res = await fetch(`https://api.sumup.com/v0.1/checkouts/${checkout_id}`, {
+    headers: { Authorization: `Bearer ${accessToken}` },
+  });
+  const data = await res.json();
+
+  const status = data.status; // "PAID", "FAILED", "PENDING"
+  const txnId =
+    data.transaction_id ||
+    (data.transactions && data.transactions[0] && data.transactions[0].id) ||
+    null;
+
+  // Update only the row for this checkout_id
+  await env.DB.prepare(
+    `UPDATE payments SET status = ?, transaction_id = ? WHERE checkout_id = ?`
+  )
+    .bind(status, txnId, checkout_id)
+    .run();
+
+  return new Response(JSON.stringify({ ok: true, status }), {
+    headers: { "Content-Type": "application/json" },
+  });
+}
+

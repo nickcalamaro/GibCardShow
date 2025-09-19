@@ -9,7 +9,7 @@
       checkoutId,
       onResponse: function(type, body) {
         console.log('Widget response', type, body);
-        fetch('/api/payment-callback', {
+        fetch('https://payment-worker.ncalamaro.workers.dev/payment-callback', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ checkout_id: checkoutId, type, body })

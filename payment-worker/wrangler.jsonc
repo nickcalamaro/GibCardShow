@@ -14,7 +14,7 @@
     // Bindings
     "d1_databases": [
         {
-            "binding": "sumupDB", // must match what you use in your Worker code
+            "binding": "DB", // must match what you use in your Worker code
             "database_name": "sumup-payments",
             "database_id": "8f4e589a-cbe8-4308-b1d4-cf9811d63393"
         }
