@@ -1,0 +1,23 @@
+# wrangler.toml
+
+name               = "sumup-checkout-worker"
+main               = "src/index.js"
+compatibility_date = "2025-09-13"
+
+[observability]
+enabled = true
+
+# 1) D1 database binding
+[[d1_databases]]
+binding       = "sumupDB"
+database_name = "sumup-payments"
+database_id   = "8f4e589a-cbe8-4308-b1d4-cf9811d63393"
+
+# 2) Cloudflare Queue binding
+[[queues]]
+binding    = "PAYMENT_UPDATES"
+queue_name = "payment-updates"
+
+# 3) (Optional) Cron triggers if you ever need them
+[triggers]
+crons = ["*/1 * * * *"]
