@@ -18,6 +18,11 @@ export default {
         return withCors(req, resp);
       }
 
+      if (url.pathname === "/redeem-promo" && req.method === "POST") {
+        const resp = await handleRedeemPromo(req, env);
+        return withCors(req, resp);
+      }
+
       return withCors(req, new Response("Not found", { status: 404 }));
     } catch (err) {
       console.error("Worker error:", err);
@@ -208,6 +213,58 @@ async function handlePaymentCallback(req, env) {
   }
 
   return new Response(JSON.stringify({ ok: true, status }), {
+    headers: { "Content-Type": "application/json" },
+  });
+}
+
+// --- Redeem Promo ---
+async function handleRedeemPromo(req, env) {
+  const { name, email, service, quantity, privacyConsent, marketingConsent, promoCode } = await req.json();
+
+  // Only allow the specific promo code and service
+  if (promoCode !== "CONVIVENCIAMTG" || service !== "Weekend Pass + MTG Tournament") {
+    return new Response(JSON.stringify({ error: "Invalid promo code or service." }), {
+      status: 400,
+      headers: { "Content-Type": "application/json" },
+    });
+  }
+
+  // Insert consent record (update if exists)
+  await env.DB.prepare(
+    `INSERT INTO gcs_consent (name, email, privacy_consent, marketing_consent, updated_at)
+     VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP)
+     ON CONFLICT(email) DO UPDATE SET
+       name = excluded.name,
+       privacy_consent = excluded.privacy_consent,
+       marketing_consent = excluded.marketing_consent,
+       updated_at = CURRENT_TIMESTAMP`
+  ).bind(
+    name,
+    email,
+    privacyConsent ? 1 : 0,
+    marketingConsent ? 1 : 0
+  ).run();
+
+  // Mark ticket as PAID in payments table
+  await env.DB.prepare(
+    `INSERT INTO payments (name, email, service, amount, currency, status, checkout_id, checkout_reference, quantity)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`
+  ).bind(
+    name,
+    email,
+    service,
+    0, // amount is zero for promo
+    "GBP",
+    "PAID",
+    `PROMO-${promoCode}-${Date.now()}`,
+    `PROMO-${promoCode}-${Date.now()}`,
+    1
+  ).run();
+
+  // Send confirmation email
+  await sendConfirmationEmail(env, name, email, service);
+
+  return new Response(JSON.stringify({ ok: true, message: "Promo redeemed — ticket reserved. Check your email for confirmation." }), {
     headers: { "Content-Type": "application/json" },
   });
 }

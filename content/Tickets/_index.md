@@ -133,23 +133,6 @@ html.dark .ticket-option:hover .price { color:#fd7366; }
   <em>bigger and better than ever!</em>
 </h2>
 
-<!-- Modal Overlay -->
-<div id="paymentModal" style="
-  display:none; position:fixed; z-index:9999; inset:0;
-  background:rgba(0,0,0,0.6); backdrop-filter:blur(4px);
-">
-  <div style="
-    background:#ffffffcc; backdrop-filter:blur(8px);
-    margin:5% auto; padding:20px 30px; border-radius:14px;
-    width:90%; max-width:420px; font-family:'Segoe UI','Helvetica Neue',sans-serif;
-    box-shadow:0 8px 24px rgba(0,0,0,0.3); position:relative;
-  ">
-    <span id="closePaymentModal" style="position:absolute; top:10px; right:14px; font-size:1.5em; cursor:pointer; color:#333;">&times;</span>
-    <div class="w-full max-w-sm text-sm">
-      {{< payment-form >}}
-    </div>
-  </div>
-</div>
 <!-- Ticket Table -->
 <div class="ticket-table-wrapper">
   <table class="ticket-table">
@@ -186,12 +169,84 @@ html.dark .ticket-option:hover .price { color:#fd7366; }
 </table>
 </div>
 
+<!-- Promo CTA -->
+<div style="text-align:center; margin-bottom:12px;">
+  <button id="promoBtn" class="ticket-btn" style="max-width:320px; width:100%; margin:0 auto; padding:0.6rem 1rem; background:linear-gradient(to right,#111,#ff5a45); border-radius:10px; font-weight:600;">Got a promo code?</button>
+</div>
+
+<!-- Promo Modal (enter code) -->
+<div id="promoModal" style="display:none; position:fixed; inset:0; z-index:10000; background:rgba(0,0,0,0.6); backdrop-filter:blur(4px); align-items:center; justify-content:center;">
+  <div style="background:#ffffffcc; margin:0 auto; padding:18px; border-radius:12px; width:92%; max-width:420px; position:relative;">
+    <button id="closePromoModal" style="position:absolute; right:12px; top:10px; border:none; background:none; font-size:1.4rem; cursor:pointer;">&times;</button>
+    <h3 style="margin:0 0 8px;">Have a promo code?</h3>
+    <p style="margin:0 0 12px;">Enter your promo code below to claim your ticket.</p>
+    <input id="promoInput" type="text" placeholder="Enter promo code" style="width:100%; padding:10px; border-radius:8px; border:1px solid #ddd;" />
+    <div style="margin-top:12px; display:flex; gap:8px; justify-content:flex-end;">
+      <button id="promoCancel" style="padding:8px 12px; background:#eee; border-radius:8px;">Cancel</button>
+      <button id="promoSubmit" style="padding:8px 12px; background:linear-gradient(to right,#111,#ff5a45); color:#fff; border-radius:8px;">Apply</button>
+    </div>
+    <div id="promoError" style="color:#a00; margin-top:10px; display:none;"></div>
+  </div>
+</div>
+
+<!-- Promo Details Modal (name + email) -->
+<div id="promoDetailsModal" style="display:none; position:fixed; inset:0; z-index:10001; background:rgba(0,0,0,0.6); backdrop-filter:blur(4px); align-items:center; justify-content:center;">
+  <div style="background:#ffffffcc; margin:0 auto; padding:18px; border-radius:12px; width:92%; max-width:420px; position:relative;">
+    <button id="closePromoDetailsModal" style="position:absolute; right:12px; top:10px; border:none; background:none; font-size:1.4rem; cursor:pointer;">&times;</button>
+    <h3 style="margin:0 0 8px;">Claim your ticket</h3>
+    <p style="margin:0 0 12px;">Please provide your name and email so we can reserve your ticket.</p>
+    <form id="promoDetailsForm">
+      <label style="display:block; margin-bottom:8px;"><span style="display:block; font-size:0.9rem;">Your name</span><input name="name" type="text" required style="width:100%; padding:10px; border-radius:8px; border:1px solid #ddd;"/></label>
+      <label style="display:block; margin-bottom:8px;"><span style="display:block; font-size:0.9rem;">Your email</span><input name="email" type="email" required style="width:100%; padding:10px; border-radius:8px; border:1px solid #ddd;"/></label>
+      <input type="hidden" name="service" value="Weekend Pass + MTG Tournament" />
+      <div style="margin-top:8px; display:flex; gap:8px; justify-content:flex-end;">
+        <button type="button" id="promoDetailsCancel" style="padding:8px 12px; background:#eee; border-radius:8px;">Cancel</button>
+        <button type="submit" id="promoDetailsSubmit" style="padding:8px 12px; background:linear-gradient(to right,#0b7,#0a9); color:#fff; border-radius:8px;">Claim ticket</button>
+      </div>
+      <div id="promoDetailsMsg" style="margin-top:10px; display:none; font-size:0.95rem;"></div>
+    </form>
+  </div>
+</div>
+
+<!-- Modal Overlay -->
+<div id="paymentModal" style="
+  display:none; position:fixed; z-index:9999; inset:0;
+  background:rgba(0,0,0,0.6); backdrop-filter:blur(4px);
+">
+  <div style="
+    background:#ffffffcc; backdrop-filter:blur(8px);
+    margin:5% auto; padding:20px 30px; border-radius:14px;
+    width:90%; max-width:420px; font-family:'Segoe UI','Helvetica Neue',sans-serif;
+    box-shadow:0 8px 24px rgba(0,0,0,0.3); position:relative;
+  ">
+    <span id="closePaymentModal" style="position:absolute; top:10px; right:14px; font-size:1.5em; cursor:pointer; color:#333;">&times;</span>
+    <div class="w-full max-w-sm text-sm">
+      {{< payment-form >}}
+    </div>
+  </div>
+</div>
+
 <script>
 document.addEventListener('DOMContentLoaded', () => {
   const modal = document.getElementById('paymentModal');
   const closeBtn = document.getElementById('closePaymentModal');
   const formHeading = document.getElementById('formHeading');
   const serviceInput = document.getElementById('service');
+
+  // Promo elements
+  const promoBtn = document.getElementById('promoBtn');
+  const promoModal = document.getElementById('promoModal');
+  const closePromoModal = document.getElementById('closePromoModal');
+  const promoCancel = document.getElementById('promoCancel');
+  const promoSubmit = document.getElementById('promoSubmit');
+  const promoInput = document.getElementById('promoInput');
+  const promoError = document.getElementById('promoError');
+
+  const promoDetailsModal = document.getElementById('promoDetailsModal');
+  const closePromoDetailsModal = document.getElementById('closePromoDetailsModal');
+  const promoDetailsForm = document.getElementById('promoDetailsForm');
+  const promoDetailsCancel = document.getElementById('promoDetailsCancel');
+  const promoDetailsMsg = document.getElementById('promoDetailsMsg');
 
   function openPaymentModalFor(service) {
     // Reset widget + show form
@@ -219,9 +274,124 @@ document.addEventListener('DOMContentLoaded', () => {
   // Close handlers
   closeBtn.addEventListener('click', closePaymentModal);
   window.addEventListener('click', e => { if (e.target === modal) closePaymentModal(); });
+
+  // Promo handlers
+  function showPromoModal() {
+    promoInput.value = '';
+    promoError.style.display = 'none';
+    promoModal.style.display = 'flex';
+    promoModal.style.alignItems = 'center';
+    promoModal.style.justifyContent = 'center';
+    promoInput.focus();
+  }
+  function hidePromoModal() {
+    promoModal.style.display = 'none';
+  }
+  function showPromoDetailsModal() {
+    promoDetailsForm.reset();
+    promoDetailsMsg.style.display = 'none';
+    promoDetailsModal.style.display = 'flex';
+    promoDetailsModal.style.alignItems = 'center';
+    promoDetailsModal.style.justifyContent = 'center';
+    promoDetailsForm.querySelector('input[name="name"]').focus();
+  }
+  function hidePromoDetailsModal() {
+    promoDetailsModal.style.display = 'none';
+  }
+
+  promoBtn.addEventListener('click', showPromoModal);
+  closePromoModal.addEventListener('click', hidePromoModal);
+  promoCancel.addEventListener('click', hidePromoModal);
+  window.addEventListener('click', e => { if (e.target === promoModal) hidePromoModal(); });
+
+  closePromoDetailsModal.addEventListener('click', hidePromoDetailsModal);
+  promoDetailsCancel.addEventListener('click', hidePromoDetailsModal);
+  window.addEventListener('click', e => { if (e.target === promoDetailsModal) hidePromoDetailsModal(); });
+
+  // Validate promo code
+  promoSubmit.addEventListener('click', (e) => {
+    e.preventDefault();
+    const code = (promoInput.value || '').trim();
+    if (!code) {
+      promoError.textContent = 'Please enter a promo code.';
+      promoError.style.display = 'block';
+      return;
+    }
+    if (code.toUpperCase() === 'CONVIVENCIAMTG') {
+      // proceed to collect details
+      hidePromoModal();
+      showPromoDetailsModal();
+    } else {
+      promoError.textContent = 'Invalid promo code.';
+      promoError.style.display = 'block';
+    }
+  });
+
+  // Handle promo details submission
+  promoDetailsForm.addEventListener('submit', async (ev) => {
+    ev.preventDefault();
+    promoDetailsMsg.style.display = 'none';
+    const formData = Object.fromEntries(new FormData(promoDetailsForm).entries());
+    const payload = {
+      name: formData.name,
+      email: formData.email,
+      service: 'Weekend Pass + MTG Tournament',
+      quantity: 1,
+      privacyConsent: true,
+      marketingConsent: false,
+      promoCode: 'CONVIVENCIAMTG'
+    };
+
+    try {
+      promoDetailsMsg.textContent = 'Processing...';
+      promoDetailsMsg.style.display = 'block';
+
+      // Try redeem endpoint first (worker should implement /redeem-promo to mark DB and optionally create a checkout)
+      const redeemRes = await fetch('https://payment-worker.ncalamaro.workers.dev/redeem-promo', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+
+      if (redeemRes.ok) {
+        const data = await redeemRes.json();
+        promoDetailsMsg.style.color = '#088';
+        promoDetailsMsg.textContent = data.message || 'Promo redeemed — ticket reserved. Check your email for confirmation.';
+        // Close modal and redirect to thank you
+        setTimeout(() => { hidePromoDetailsModal(); window.location.href = '/tickets/thank-you/'; }, 1200);
+        return;
+      }
+
+      // Fallback: create a normal checkout (worker will create PENDING payment row)
+      const fallbackRes = await fetch('https://payment-worker.ncalamaro.workers.dev/create-checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      const fallbackData = await fallbackRes.json();
+      if (fallbackData.checkout_id) {
+        promoDetailsMsg.style.color = '#088';
+        promoDetailsMsg.textContent = 'Promo accepted — created a checkout. You will be redirected to complete the process.';
+        // Open payment modal for user to complete payment (in case worker expects SumUp flow)
+        hidePromoDetailsModal();
+        openPaymentModalFor(payload.service);
+        // prefill service and try to mount widget if checkout_id available via global mountSumUpWidget function
+        if (typeof mountSumUpWidget === 'function') {
+          mountSumUpWidget(fallbackData.checkout_id);
+        }
+      } else {
+        promoDetailsMsg.style.color = '#a00';
+        promoDetailsMsg.textContent = fallbackData.error || 'Unable to redeem promo at this time.';
+      }
+    } catch (err) {
+      promoDetailsMsg.style.color = '#a00';
+      promoDetailsMsg.textContent = 'Network error while redeeming promo. Please try again.';
+      console.error('Promo redeem error:', err);
+    }
+  });
+
 });
 </script>
-
 
 </body>
 </html>
