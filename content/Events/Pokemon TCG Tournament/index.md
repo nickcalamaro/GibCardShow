@@ -1,7 +1,7 @@
 ---
 Title: Pokémon TCG - Standard Tournament
 Date: 2025-11-02
-Summary: 'Gibraltar&apos;s biggest Pokémon TCG Tournament ever'
+Summary: 'Gibraltar&apos;s biggest Pokémon TCG Tournament ever! With over £300 in prizes waiting to be won!'
 ---
 
 <meta name="description" content="Enter the Pokémon TCG Standard Tournament at the Gibraltar Card Show 2025. Battle through Swiss rounds and Top 8 for a chance to win exclusive prizes.">
@@ -63,8 +63,8 @@ Summary: 'Gibraltar&apos;s biggest Pokémon TCG Tournament ever'
 
 <section class="event-card">
   <div class="section" style="border-top: none;">
-    <div class="row"><div class="label">Registration</div><div class="value">9:30 AM</div></div>
-    <div class="row"><div class="label">Start time</div><div class="value">10:00 AM</div></div>
+    <div class="row"><div class="label">Registration</div><div class="value">10:45 AM</div></div>
+    <div class="row"><div class="label">Start time</div><div class="value">11:00 AM</div></div>
   </div>
 
   <div class="section">

@@ -1,7 +1,7 @@
 ---
 Title: MTG - Standard Tournament
 Date: 2025-11-01
-Summary: 'Gibraltar&apos;s biggest MTG Tournament to Date!'
+Summary: 'Gibraltar&apos;s biggest MTG Tournament to Date! Featuring over £250 in prizes and a great day of friendly competition.'
 ---
 
 
@@ -119,11 +119,11 @@ Summary: 'Gibraltar&apos;s biggest MTG Tournament to Date!'
   <div class="section" style="border-top: none;">
     <div class="row">
       <div class="label">Registration</div>
-      <div class="value">9:30 AM</div>
+      <div class="value">10:45 AM</div>
     </div>
     <div class="row">
       <div class="label">Start time</div>
-      <div class="value">10:00 AM</div>
+      <div class="value">11:00 AM</div>
     </div>
   </div>
 
