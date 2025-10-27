@@ -81,9 +81,9 @@ Summary: 'Gibraltar&apos;s biggest Pokémon TCG Tournament ever'
   </div>
 
   <div class="section">
-    <div class="row"><div class="label">Rounds</div><div class="value">4 + Top 8</div></div>
+    <div class="row"><div class="label">Rounds</div><div class="value">4 Rounds+ Top 4</div></div>
     <p>Players will compete in 4 Swiss rounds to determine standings.
-      The top 8 players will then advance to single‑elimination knockout rounds until a champion is crowned.</p>
+      The top 4 players will then advance to single‑elimination knockout rounds until a champion is crowned.</p>
     <p>All rounds will be played as best of three matches and last 50 minutes.</p>
   </div>
 

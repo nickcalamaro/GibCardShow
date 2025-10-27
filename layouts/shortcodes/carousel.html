@@ -1,6 +1,6 @@
 {{ $id := delimit (slice "carousel" (partial "functions/uid.html" .)) "-" }}
 {{ $aspect := default "16-9" (.Get "aspectRatio") }}
-{{ $interval := default "2000" (.Get "interval") }}
+{{ $interval := default "600" (.Get "interval") }}
 
 {{ $page := .Page.Resources }}
 {{ $imagesTemp := .Get "images" }}
@@ -16,7 +16,7 @@
     {{ end }}
 {{ end }}
 
-<div id="{{ $id }}" class="relative" data-twe-carousel-init data-twe-ride="carousel">
+<div id="{{ $id }}" class="relative select-none" data-twe-carousel-init data-twe-ride="carousel" role="region" aria-roledescription="carousel" aria-label="Image Carousel" style="touch-action: pan-y; -webkit-tap-highlight-color: transparent;">
     <div class="absolute right-0 bottom-0 left-0 z-[2] mx-[15%] mb-10 flex list-none justify-center p-0"
         data-twe-carousel-indicators>
 
@@ -36,10 +36,25 @@
         {{ $num := 0 }}
         {{ range $images }}
 
-        <div class="relative float-left -mr-[100%] {{ if not (eq $num 0) }} hidden {{ end }} w-full transition-transform duration-[{{ $interval }}ms] ease-in-out motion-reduce:transition-none"
+        <div class="relative float-left -mr-[100%] {{ if not (eq $num 0) }} hidden {{ end }} w-full transition-transform will-change-transform transform-gpu duration-[{{ $interval }}ms] ease-out motion-reduce:transition-none"
             data-twe-carousel-item {{ if eq $num 0 }} data-twe-carousel-active {{ end }}>
             <div class="ratio-{{ $aspect }} single_hero_background">
-                <img src="{{ .RelPermalink }}" class="block absolute top-0 object-cover w-full h-full nozoom" alt="carousel image {{$num}}"/>
+                {{ $img := . }}
+                {{ $small := $img.Fit "768x0 q75" }}
+                {{ $medium := $img.Fit "1280x0 q75" }}
+                {{ $large := $img.Fit "1920x0 q75" }}
+                {{ $isFirst := eq $num 0 }}
+                                <img 
+                  src="{{ $medium.RelPermalink }}"
+                  srcset="{{ $small.RelPermalink }} 768w, {{ $medium.RelPermalink }} 1280w, {{ $large.RelPermalink }} 1920w"
+                  sizes="100vw"
+                  class="block absolute top-0 object-cover w-full h-full nozoom"
+                  alt="carousel image {{$num}}"
+                  loading="{{ if $isFirst }}eager{{ else }}lazy{{ end }}"
+                  decoding="async"
+                  fetchpriority="{{ if $isFirst }}high{{ else }}low{{ end }}"
+                                    draggable="false"
+                />
             </div>
         </div>
 
@@ -69,6 +84,6 @@
             </svg>
         </span>
         <span
-            class="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]">Nextsads</span>
+            class="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]">Next</span>
     </button>
 </div>
